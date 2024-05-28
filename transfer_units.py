@@ -1,3 +1,5 @@
+import json
+
 class Request:
   def __init__(self, command, params):
     self.type = command
@@ -9,7 +11,7 @@ class Response:
     self.payload = payload
 
 def serialize(response):
-  return bytes(str(response.status) + ' ' + response.payload, encoding='utf-8')
+  return bytes(json.dumps({'status': response.status, 'payload': response.payload}), encoding='utf-8')
 
 def deserialize(request):
   items = request.decode('utf-8').strip().split(' ')
