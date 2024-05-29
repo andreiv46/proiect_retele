@@ -1,6 +1,6 @@
 import socket 
 import threading
-from topic import TopicList, TopicProtocol
+from auction import AuctionList, AuctionProtocol
 from transfer_units import Request, Response, serialize, deserialize
 from server_client import Client
 
@@ -9,7 +9,7 @@ class Server:
     def __init__(self, host='localhost', port=8080):
         self.host = host
         self.port = port
-        self.global_state = TopicList()
+        self.global_state = AuctionList()
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
 
@@ -18,7 +18,7 @@ class Server:
 
     def handle_client_read(self, client : Client):
         try:
-            protocol = TopicProtocol(client, self.global_state)
+            protocol = AuctionProtocol(client, self.global_state)
             while True:
                 if client.socket == None:
                     break

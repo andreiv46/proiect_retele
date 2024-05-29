@@ -20,16 +20,17 @@ class Bid:
         return f"{self.amount}$ by {self.bidder.name}"
 
 class Item:
-    def __init__(self, name, min_price, seller : Client):
+    def __init__(self, name: str, min_price: int, seller : Client):
         self.name = name
         self.min_price = min_price
         self.seller = seller
         self.bids : List[Bid] = []
         self.lock = threading.Lock()
-        self.is_bid_active = True
-        self.expiration_time = datetime.datetime.now() + datetime.timedelta(minutes=10)
+        self.is_bid_active: bool = True
+        self.highest_bid: int = None
+        self.expiration_time = datetime.datetime.now() + datetime.timedelta(minutes=5)
 
-    def add_bid(self, bid):
+    def add_bid(self, bid: Bid):
         with self.lock:
             self.bids.append(bid)
 
